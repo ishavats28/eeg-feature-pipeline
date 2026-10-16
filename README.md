@@ -8,7 +8,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f)](LICENSE)
 ![BIDS EEG](https://img.shields.io/badge/BIDS-EEG-005F73)
 
-Developed by **Isha Vats**, EEG Feature Pipeline is a reproducible Python workflow
+EEG Feature Pipeline is a reproducible Python workflow
 for resting-state EEG preprocessing, spectral and temporal feature extraction,
 sensor-space functional connectivity, within-recording feature stability, optional
 preprocessing sensitivity analysis, and quality-control reporting. The supported
