@@ -1,11 +1,22 @@
-# eeg-feature-pipeline
+# EEG Feature Pipeline
 
-*BIDS-native EEG preprocessing, feature extraction, connectivity, and reliability analysis*
+**BIDS-Native EEG Preprocessing, Feature Extraction & Reliability Analysis**
 
-`eeg-feature-pipeline` is a research-focused Python pipeline for BIDS-native
-resting-state EEG preprocessing, sensor-level feature extraction, within-recording
-feature stability, preprocessing sensitivity, quality control, and offline
-reporting. The supported modality is EEG.
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23415046.svg)](https://doi.org/10.5281/zenodo.23415046)
+[![GitHub release](https://img.shields.io/badge/release-v1.0.0-2f81f7)](https://github.com/ishavats28/eeg-feature-pipeline/releases/tag/v1.0.0)
+![Python 3.10–3.13](https://img.shields.io/badge/python-3.10--3.13-3776AB?logo=python&logoColor=white)
+[![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f)](LICENSE)
+![BIDS EEG](https://img.shields.io/badge/BIDS-EEG-005F73)
+
+Developed by **Isha Vats**, EEG Feature Pipeline is a reproducible Python workflow
+for resting-state EEG preprocessing, spectral and temporal feature extraction,
+sensor-space functional connectivity, within-recording feature stability, optional
+preprocessing sensitivity analysis, and quality-control reporting. The supported
+modality is EEG.
+
+[Features](#features) · [Installation](#installation) · [Quick start](#quick-start) ·
+[Scientific methodology](#scientific-methodology) ·
+[Real-data demonstration](#real-data-demonstration) · [Citation](#citation)
 
 ## Features
 
@@ -231,17 +242,23 @@ average reference, 250 Hz resampling, 4-second epochs with 2-second overlap, and
 channels, ICA is disabled. The 45 Hz low-pass excludes the reported 60 Hz mains
 frequency, so a redundant notch is not applied.
 
-Actual run summary:
+### Actual run summary
 
-| Result | Observed value |
-|---|---:|
+| Item | Verified result |
+|---|---|
+| Selected recording | `sub-pd6`, `ses-off`, `task-rest` |
+| Eligible EEG channels | 32 |
 | Candidate / retained / rejected epochs | 94 / 57 / 37 |
-| Automatically detected bad channels | 0 |
-| Spectral table | 10,944 rows x 12 columns |
-| Temporal table | 1,824 rows x 11 columns |
-| Connectivity table | 4,960 rows x 14 columns |
-| Stability matches | 512 feature summaries |
-| Stability groups | 24 and 33 retained epochs |
+| Spectral output | 10,944 rows |
+| Temporal output | 1,824 rows |
+| Connectivity output | 4,960 rows |
+| Stability output | 512 rows |
+
+These values come from the completed local execution manifest and its associated
+tables. This is a single-recording technical demonstration, not clinical or
+population-level validation. See the
+[full demonstration record](docs/real-data-demonstration.md) for methods, sanity
+checks, output dimensions, and provenance.
 
 The completed manifest contains one connectivity caution: at the 1 Hz lower edge,
 the delta estimator has four cycles per four-second epoch. This does not invalidate
@@ -265,19 +282,27 @@ overlapping windows, not population findings or test-retest estimates. Full meth
 sanity checks, and provenance are recorded in
 [`docs/real-data-demonstration.md`](docs/real-data-demonstration.md).
 
-![Independent before and after trace views for Fp1](docs/assets/sub-pd6_ses-off_task-rest_desc-qc_signal.png)
+### Demonstration figures
 
-The traces are independent views and are not asserted to be sample-aligned after
-filtering, rereferencing, and resampling.
+![Preprocessing trace comparison for Fp1](docs/assets/sub-pd6_ses-off_task-rest_desc-qc_signal.png)
+
+*Figure 1. Preprocessing trace comparison for Fp1.* The traces are independent
+views and are not asserted to be sample-aligned after filtering, rereferencing, and
+resampling.
 
 ![Welch PSD comparison for Fp1](docs/assets/sub-pd6_ses-off_task-rest_desc-qc_psd.png)
 
-The PSD panel shows actual estimates over the shared 1-45 Hz range; amplitude
-reduction is not interpreted as physiological improvement.
+*Figure 2. Welch PSD comparison for Fp1.* The panel shows actual estimates over the
+shared 1-45 Hz range; amplitude reduction is not interpreted as physiological
+improvement.
 
 ![Epoch retention summary](docs/assets/sub-pd6_ses-off_task-rest_desc-qc_epoch-retention.png)
 
+*Figure 3. Epoch-retention summary for the selected recording.*
+
 ![Within-recording feature stability summary](docs/assets/sub-pd6_ses-off_task-rest_desc-stability_comparison.png)
+
+*Figure 4. Within-recording feature stability comparison.*
 
 To reproduce the example, install the small acquisition utility separately, fetch
 only the documented participant subset, and run the pinned configuration:
@@ -345,20 +370,29 @@ was performed.
 Potential extensions include carefully reviewed dataset-level execution and richer
 derivative metadata, but they are outside the current single-recording scope.
 
-## License and citation
+## Citation
 
 **Author:** Isha Vats
 
-The software is released under the [MIT License](LICENSE), copyright 2026 Isha
-Vats. Citation metadata are provided in [`CITATION.cff`](CITATION.cff). No software
-DOI, institutional affiliation, or publication is claimed. Dependency packages
-retain their own licenses, and the MIT software license does not replace the CC0
-license of the externally hosted demonstration dataset.
+When using this software, cite the archived version **1.0.0** using its
+version-specific Zenodo DOI:
 
-When using the demonstration data, cite the dataset DOI above and follow the data
-authors' citation guidance in its README. The dataset description credits Alexander
-P. Rockhill, Nicko Jackson, Jobi George, Adam Aron, and Nicole C. Swann. The pipeline
-uses [MNE-Python](https://mne.tools/),
+- **Software:** Isha Vats, *EEG Feature Pipeline*, version 1.0.0.
+  [https://doi.org/10.5281/zenodo.23415046](https://doi.org/10.5281/zenodo.23415046)
+- **Source dataset used only for the demonstration:** OpenNeuro `ds002778` v1.0.5.
+  [https://doi.org/10.18112/openneuro.ds002778.v1.0.5](https://doi.org/10.18112/openneuro.ds002778.v1.0.5)
+
+The first DOI identifies the archived software release; the second identifies the
+separate public dataset used for the real-data example. Citation metadata are also
+available in [`CITATION.cff`](CITATION.cff). When reusing the demonstration data,
+follow the dataset authors' citation guidance in its README. The dataset description
+credits Alexander P. Rockhill, Nicko Jackson, Jobi George, Adam Aron, and Nicole C.
+Swann.
+
+The software is released under the [MIT License](LICENSE), copyright 2026 Isha
+Vats. Dependency packages retain their own licenses, and the MIT software license
+does not replace the CC0 license of the externally hosted demonstration dataset.
+The pipeline uses [MNE-Python](https://mne.tools/),
 [MNE-BIDS](https://mne.tools/mne-bids/), and
 [MNE-Connectivity](https://mne.tools/mne-connectivity/); cite those projects as
-appropriate. No software DOI has been assigned.
+appropriate.
