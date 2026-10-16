@@ -1,0 +1,119 @@
+# Real-data demonstration configuration for OpenNeuro ds002778 v1.0.5.
+# Expected local input: ../data/ds002778, downloaded with only sub-pd6.
+dataset:
+  root: ../data/ds002778
+  derivatives_root: ../derivatives/example-real-eeg/eeg-feature-pipeline
+  participant: pd6
+  # Quote YAML words such as "off" so they remain BIDS entity strings.
+  session: "off"
+  task: rest
+  run: null
+
+# The recording is sampled at 512 Hz and reports 60 Hz mains frequency.
+# A 45 Hz low-pass excludes the line frequency, so no redundant notch is used.
+preprocessing:
+  highpass_hz: 1.0
+  lowpass_hz: 45.0
+  notch_hz: []
+  resample_hz: 250.0
+  reference: average
+  # The eight BioSemi EXG electrodes are labeled EEG in this dataset release,
+  # but are auxiliary external electrodes rather than the 32 named scalp sensors.
+  eeg_channels:
+    - Fp1
+    - AF3
+    - F7
+    - F3
+    - FC1
+    - FC5
+    - T7
+    - C3
+    - CP1
+    - CP5
+    - P7
+    - P3
+    - Pz
+    - PO3
+    - O1
+    - Oz
+    - O2
+    - PO4
+    - P4
+    - P8
+    - CP6
+    - CP2
+    - C4
+    - T8
+    - FC6
+    - FC2
+    - F4
+    - F8
+    - AF4
+    - Fp2
+    - Fz
+    - Cz
+
+epochs:
+  duration_seconds: 4.0
+  overlap_seconds: 2.0
+  reject_by_annotation: true
+
+features:
+  frequency_bands:
+    delta: [1.0, 4.0]
+    theta: [4.0, 8.0]
+    alpha: [8.0, 13.0]
+    beta: [13.0, 30.0]
+    gamma: [30.0, 45.0]
+  selected: [absolute_band_power, relative_band_power, spectral_entropy]
+  temporal_selected: [rms, variance, hjorth_activity, hjorth_mobility, hjorth_complexity]
+  analysis_range_hz: [1.0, 45.0]
+  psd_window_seconds: 2.0
+  psd_overlap_fraction: 0.5
+  psd_n_fft: null
+
+# The BIDS sidecar declares 40 EEG channels and no EOG channels. ICA is kept
+# disabled because this demonstration has no valid EOG channel for the
+# pipeline's conservative automatic component selection.
+artifacts:
+  reject_bad_channels: true
+  reject_bad_epochs: true
+  # Peak-to-peak epoch criterion. At 200 uV it remains conservative for this
+  # technical example while avoiding near-total rejection driven by Fp1/Fp2.
+  amplitude_threshold_uv: 200.0
+  flat_threshold_uv: 0.5
+  noisy_channel_zscore: 6.0
+  ica_enabled: false
+  ica_n_components: 0.99
+  ica_random_state: 97
+  ica_max_iter: 500
+  ica_fit_highpass_hz: 1.0
+  ica_eog_detection: true
+  ica_eog_threshold: 3.0
+  ica_min_eeg_channels: 4
+  ica_min_duration_seconds: 20.0
+
+connectivity:
+  enabled: true
+  methods: [coherence_squared, pli]
+  bands: [delta, theta, alpha, beta, gamma]
+  minimum_epochs: 2
+  include_diagonal: false
+
+reliability:
+  enabled: true
+  segment_count: 2
+  method: spearman
+  minimum_epochs_per_group: 2
+
+# Disabled for the primary demonstration to keep this a focused single-branch run.
+sensitivity:
+  enabled: false
+  filter_variants_hz: [[0.5, 45.0]]
+
+reporting:
+  output_formats: [tsv, json]
+  save_figures: true
+  figure_dpi: 150
+  qc_enabled: true
+  overwrite: false

@@ -1,0 +1,87 @@
+# Dataset and selector settings used by discovery and preprocessing.
+dataset:
+  root: ../data
+  derivatives_root: ../derivatives/eeg-feature-pipeline
+  participant: null
+  session: null
+  task: rest
+  run: null
+
+# Preprocessing settings. Notches outside the passband are skipped.
+preprocessing:
+  highpass_hz: 1.0
+  lowpass_hz: 45.0
+  notch_hz: []
+  resample_hz: 250.0
+  reference: average
+  # Optional explicit subset when BIDS channel types include auxiliary electrodes.
+  eeg_channels: null
+
+# Fixed-length resting-state epochs; overlap must be shorter than duration.
+epochs:
+  duration_seconds: 4.0
+  overlap_seconds: 2.0
+  reject_by_annotation: true
+
+# Spectral and temporal feature settings.
+features:
+  frequency_bands:
+    delta: [1.0, 4.0]
+    theta: [4.0, 8.0]
+    alpha: [8.0, 13.0]
+    beta: [13.0, 30.0]
+    gamma: [30.0, 45.0]
+  selected: [absolute_band_power, relative_band_power, spectral_entropy]
+  temporal_selected: [rms, variance, hjorth_activity, hjorth_mobility, hjorth_complexity]
+  analysis_range_hz: [1.0, 45.0]
+  psd_window_seconds: 2.0
+  psd_overlap_fraction: 0.5
+  psd_n_fft: null
+
+# Conservative bad-channel, epoch-rejection, and optional ICA settings.
+# Amplitude values are expressed in microvolts here; MNE uses volts internally.
+artifacts:
+  reject_bad_channels: true
+  reject_bad_epochs: true
+  amplitude_threshold_uv: 150.0
+  flat_threshold_uv: 0.5
+  noisy_channel_zscore: 6.0
+  ica_enabled: false
+  ica_n_components: 0.99
+  ica_random_state: 97
+  ica_max_iter: 500
+  ica_fit_highpass_hz: 1.0
+  ica_eog_detection: true
+  ica_eog_threshold: 3.0
+  ica_min_eeg_channels: 4
+  ica_min_duration_seconds: 20.0
+
+# Pooled recording-level sensor-space connectivity settings.
+connectivity:
+  enabled: false
+  methods: [coherence_squared, pli]
+  bands: [delta, theta, alpha, beta, gamma]
+  minimum_epochs: 2
+  include_diagonal: false
+
+# Two-group within-recording feature stability settings. A boundary epoch is
+# omitted when necessary to prevent overlap between the chronological groups.
+reliability:
+  enabled: true
+  segment_count: 2
+  method: spearman
+  minimum_epochs_per_group: 2
+
+# Optional one-at-a-time filter-passband sensitivity comparison. This is
+# deliberately disabled because it runs preprocessing and features twice.
+sensitivity:
+  enabled: false
+  filter_variants_hz: [[0.5, 45.0]]
+
+# Structured outputs and diagnostic PNG settings.
+reporting:
+  output_formats: [tsv, json]
+  save_figures: true
+  figure_dpi: 150
+  qc_enabled: true
+  overwrite: false

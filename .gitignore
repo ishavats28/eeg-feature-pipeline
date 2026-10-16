@@ -1,0 +1,27 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.cache/
+.venv/
+.idea/
+.vscode/
+.mne/
+build/
+dist/
+data/
+derivatives/
+.DS_Store
+Thumbs.db
+*.tmp
+*.log
+
+# Raw electrophysiology and local MNE outputs must remain outside the public tree.
+*.bdf
+*.edf
+*.eeg
+*.vhdr
+*.vmrk
+*.set
+*.fif

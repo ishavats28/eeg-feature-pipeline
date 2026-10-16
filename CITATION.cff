@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata in this file."
+title: "eeg-feature-pipeline"
+abstract: >-
+  A BIDS-native Python pipeline for resting-state EEG preprocessing,
+  neurophysiological feature extraction, sensor-space functional connectivity,
+  within-recording feature stability, preprocessing sensitivity analysis, and
+  quality-control reporting.
+type: software
+authors:
+  - given-names: Isha
+    family-names: Vats
+version: 1.0.0
+license: MIT
